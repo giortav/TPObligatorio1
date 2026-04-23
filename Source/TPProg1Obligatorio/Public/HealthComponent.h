@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+
 
 #pragma once
 
@@ -14,18 +14,18 @@ class TPPROG1OBLIGATORIO_API UHealthComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
+	
 	UHealthComponent();
 
 protected:
-	// Called when the game starts
+	
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
+	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	
+	// La variable que quiero replicar tiene que tener este especificador
 	UPROPERTY(ReplicatedUsing = OnRep_Health)
 	float Health = 50.f;
 
@@ -34,7 +34,7 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	float MinHealth = 0.f;
-
+// Se ejecuta cuando cambia la variable de health (actualiza)
 	UFUNCTION()
 	void OnRep_Health();
 	
@@ -44,6 +44,7 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnLifeChanged OnLifeChanged;
 private:
+	// Sobreescribir la funcion
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 };

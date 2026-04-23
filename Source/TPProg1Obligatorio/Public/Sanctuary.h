@@ -59,17 +59,17 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	USoundBase* ActivateSound;
-
+// La variable que quiero replicar tiene que tener este especificador
 	UPROPERTY(ReplicatedUsing=OnRep_IsAvailable)
 	bool bIsAvailable = true;
 	
 private:
-	
+	// Se ejecuta cuando cambia la variable de health (actualiza)
 	UFUNCTION()
 	void OnRep_IsAvailable();
 
 	void UpdateMaterial();
-
+// Sobreescribir la funcion
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	

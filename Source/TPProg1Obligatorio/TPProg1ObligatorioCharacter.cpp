@@ -209,35 +209,40 @@ void ATPProg1ObligatorioCharacter::HandleLifeChanged(float Health, float MaxHeal
 		HealthWidget->UpdateBar(Health, MaxHealth);
 	}
 }
-
+// Se activa cuando se presiona la tecla "E"
 void ATPProg1ObligatorioCharacter::DoInteract()
 {
 	if (!IsLocallyControlled()) return;
-	if (!CurrentInteractable) return;
+	if (!CurrentInteractable) return; 
+	// llama a server interact
 	Server_Interact(CurrentInteractable);
 }
 
-
+// RPC server. El cliente necesita que la interaccion se ejecute en el servidor. 
 void ATPProg1ObligatorioCharacter::Server_Interact_Implementation(AActor* Interactable)
 {
+	// Filtramos que tenga autoridad
 	if (!HasAuthority()) return;
 	if (Interactable && Interactable->Implements<UInteractableInterface>())
 	{
+		// Se llama a la interfaz
 		IInteractableInterface::Execute_Interact(Interactable, this);
 	}
 }
-
+// Implementacion de la interfaz que es llamada desde el sanctuary al momento de "curarse"
 void ATPProg1ObligatorioCharacter::ShowHealMessage_Implementation(float HealAmount)
 {
+	// Llama al Client RPC 
 	Client_ShowHealMessage(HealAmount);
 }
-
+// RPC client. El servidor envia informacion a un cliente especifico
 void ATPProg1ObligatorioCharacter::Client_ShowHealMessage_Implementation(float HealAmount)
 {
 	if (!IsLocallyControlled()) return;
 
 	if (HealNotificationClass)
 	{
+		// Creacion de widget
 		UHealNotificationWidget* Widget = CreateWidget<UHealNotificationWidget>(GetWorld(), HealNotificationClass);
 		if (Widget)
 		{
